@@ -37,6 +37,7 @@ class Appkey(models.Model):
     }
     '''
     name = models.CharField(max_length=40, unique=True)
+    secert_key = models.CharField(max_length=40)
     desc = models.CharField(max_length=40)
     access = DictField()
     created_at = models.DateTimeField(auto_now_add=True)
