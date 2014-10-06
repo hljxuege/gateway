@@ -20,7 +20,11 @@ class Method(models.Model):
     }
     '''
     name = models.CharField(max_length=40, unique=True)
+    desc = models.CharField(max_length=40)
+    server = models.ForeignKey('Server')
     url = DictField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
 
 class Appkey(models.Model):
     '''
@@ -33,5 +37,15 @@ class Appkey(models.Model):
     }
     '''
     name = models.CharField(max_length=40, unique=True)
+    desc = models.CharField(max_length=40)
     access = DictField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
 
+class Server(models.Model):
+    name = models.CharField(max_length=40, unique=True)
+    desc = models.CharField(max_length=40)
+    ip = models.CharField(max_length=40)
+    port = models.IntegerField(max_length=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
