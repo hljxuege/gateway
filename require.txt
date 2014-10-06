@@ -1,0 +1,4 @@
+django=1.7
+django-nonrel
+djangotoolbox
+django-mongodb-engine =0.5.1
