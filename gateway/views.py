@@ -104,8 +104,21 @@ def modify_method(request, obj_id):
     @param obj_id: method id
     @param param: other attribute
     '''
-    pass
+    method = get_object_or_404(Method, id=obj_id)
+    if request.method == 'POST':
+        f = MethodForm(request.POST)
+        if f.is_valid():
+            return render(request, 'index.html')
+    else:
+        f = MethodForm()
+        return render(request, 'method.html', {'method':method, 'action':reverse('modify_method')})  
 
+def method_list(request, server_id):
+    '''
+    list the server_id 's method
+    '''
+    return render(request, 'method_list.html')
+    
 def add_server(request):
     '''
     @param name: 
