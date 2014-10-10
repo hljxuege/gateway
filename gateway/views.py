@@ -8,9 +8,9 @@ import json
 
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
-from gateway.forms import GatewayForm
+from gateway.forms import GatewayForm, MethodForm
 from models import Method, Appkey
 
 
@@ -85,8 +85,15 @@ def add_method(request):
     @param version: 
     @param url: 
     
-    '''    
-    pass
+    '''
+    
+    if request.method == 'POST':
+        f = MethodForm(request.POST)
+        if f.is_valid():
+            return render(request, 'method.html')
+    else:
+        f = MethodForm()
+        return render(request, 'method.html')    
 
 def modify_method(request, obj_id):
     '''

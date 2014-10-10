@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'gateway.views.home', name='home'),
     url(r'^gateway$', 'gateway.views.gateway', name='gateway'),
+    url(r'^gateway/add_method/$', 'gateway.views.add_method', name='add_method'),
     # url(r'^gateway/', include('gateway.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

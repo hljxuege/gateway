@@ -11,4 +11,13 @@ class GatewayForm(forms.Form):
     appkey = forms.CharField()
     nonce = forms.CharField()
     sign = forms.CharField()
+
+class MethodForm(forms.Form): 
+    name = forms.CharField()
+    version = forms.CharField()
+    url = forms.CharField()   
     
+class ServerForm(forms.Form):
+    name = forms.CharField()
+    ip = forms.IPAddressField()
+    port = forms.IntegerField()
