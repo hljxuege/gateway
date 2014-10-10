@@ -1,0 +1,45 @@
+body {
+	width: 960px;
+	text-align: center;
+	margin-left:auto;
+	margin-right:auto;
+}
+.menu {
+	border:solid 1px blue;
+	margin-bottom: 20px;
+}
+.menu-title {
+	display:inline;
+	margin: 74px;
+}
+
+.content {
+	border:solid 1px red;
+}
+.content-left {
+	float: left;
+	height: 400px;
+	width: 110px;
+}
+
+.content-head {
+	height: 20px;
+}
+.content-center {
+	float: left;
+	width: 600px;
+	height: 400px;
+
+}
+.content-right {
+	float: right;
+	height: 400px;
+	width: 240px;
+}
+.content-bottom {
+	clear:both;
+}
+.item {
+	display:inline;
+	list-style-type:none;
+}
