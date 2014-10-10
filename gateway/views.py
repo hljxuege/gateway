@@ -7,11 +7,13 @@ Created on Oct 6, 2014
 import json
 
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 
 from gateway.forms import GatewayForm, MethodForm
 from models import Method, Appkey
+
 
 def index(request):
     return render(request, 'index.html')
@@ -92,10 +94,10 @@ def add_method(request):
     if request.method == 'POST':
         f = MethodForm(request.POST)
         if f.is_valid():
-            return render(request, 'method.html')
+            return render(request, 'index.html')
     else:
         f = MethodForm()
-        return render(request, 'method.html')    
+        return render(request, 'method.html', {'form':f, 'action':reverse('add_method')})    
 
 def modify_method(request, obj_id):
     '''
