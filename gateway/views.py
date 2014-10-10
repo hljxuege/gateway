@@ -13,6 +13,8 @@ from django.shortcuts import get_object_or_404, render
 from gateway.forms import GatewayForm, MethodForm
 from models import Method, Appkey
 
+def index(request):
+    return render(request, 'index.html')
 
 def _parse_request(request):
     
