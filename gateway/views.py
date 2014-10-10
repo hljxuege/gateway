@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 
-from gateway.forms import GatewayForm, MethodForm
+from gateway.forms import GatewayForm, MethodForm, ServerForm
 from models import Method, Appkey
 
 
@@ -83,7 +83,7 @@ def gateway(request):
         data = {'status':-1, 'msg':str(e)}
     return HttpResponse(json.dumps(data))
 
-def add_method(request):
+def method_add(request):
     '''
     @param name:  
     @param version: 
@@ -97,9 +97,9 @@ def add_method(request):
             return render(request, 'index.html')
     else:
         f = MethodForm()
-        return render(request, 'method.html', {'form':f, 'action':reverse('add_method')})    
+        return render(request, 'method.html', {'form':f, 'action':reverse('method_add')})    
 
-def modify_method(request, obj_id):
+def method_modify(request, obj_id):
     '''
     @param obj_id: method id
     @param param: other attribute
@@ -111,7 +111,7 @@ def modify_method(request, obj_id):
             return render(request, 'index.html')
     else:
         f = MethodForm()
-        return render(request, 'method.html', {'method':method, 'action':reverse('modify_method')})  
+        return render(request, 'method.html', {'method':method, 'action':reverse('method_modify')})  
 
 def method_list(request, server_id):
     '''
@@ -119,27 +119,37 @@ def method_list(request, server_id):
     '''
     return render(request, 'method_list.html')
     
-def add_server(request):
+def server_add(request):
     '''
     @param name: 
     @param ip
     @param host: 
     '''
-    pass
+    if request.method == 'POST':
+        f = ServerForm(request.POST)
+        if f.is_valid():
+            return render(request, 'index.html')
+    else:
+        f = ServerForm()
+        return render(request, 'server.html', {'form':f, 'action':reverse('server_add')})  
 
-def modify_server(request, obj_id):
+def server_modify(request, obj_id):
     '''
     '''
     pass
 
-def add_appkey(request):
+def server_list(request):
+    '''
+    '''
+    pass
+def appkey_add(request):
     '''
     @param name: 
     @param secert_key: 
     '''
     pass
 
-def modify_appkey(request, obj_id):
+def appkey_modify(request, obj_id):
     '''
     @param : 
     '''
