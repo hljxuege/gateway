@@ -29,8 +29,8 @@
 	 </div>
 	<div class='content content-left' id='content-left'>
 	<ul class='item'>
-	<li><div class='item-left' id='apppkey-item'>Appkey</div></li>
-	<li><div class='item-left' id='server-item'>Server</div></li>	
+	<li><div class='item-left' id='apppkey-list'>Appkey</div></li>
+	<li><div class='item-left' id='server-list'>Server</div></li>	
 	</ul>
 	</div>
 
@@ -47,3 +47,24 @@
 	<div hidden id='content-about'>about</div>
 </body>
 <html/>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.item-left').click(function(){
+		id = $(this).attr('id');
+		// console.log(id);
+		var requrl = '#';
+		if(id=='appkey-list'){
+			requrl = "";
+		}
+		if(id=='server-list'){
+			requrl = "{% url 'server-list' %}";
+		}
+		if(requrl!='#'){
+			$.get(requrl, function(data){
+			    $(".content-center").html(data);
+			});
+		}
+	});
+
+});
+</script>

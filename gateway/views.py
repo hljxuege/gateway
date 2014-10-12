@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 
 from gateway.forms import GatewayForm, MethodForm, ServerForm
-from models import Method, Appkey
+from models import Method, Appkey, Server
 
 
 def index(request):
@@ -141,7 +141,9 @@ def server_modify(request, obj_id):
 def server_list(request):
     '''
     '''
-    pass
+    servers = Server.objects.all()
+    return render(request, 'server_list.html', {'servers':servers})
+  
 def appkey_add(request):
     '''
     @param name: 
