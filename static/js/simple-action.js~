@@ -1,0 +1,57 @@
+$(document).ready(function(){
+	$('.menu-title').click(function(){
+		var title = $(this).html();
+		if (title == 'Home'){
+			$('#content-center').html($('#content-home').html())
+		}
+		if (title == 'Contact'){
+			$('#content-center').html($('#content-contact').html())
+		}
+		if (title == 'About'){
+			$('#content-center').html($('#content-about').html())
+		}
+
+	});
+	$('.close-message').click(function(){
+		var content = $(this).parent();
+		$(content).remove();
+	});
+});
+
+
+$(document).ready(function(){
+	function get_data (url){
+		console.log(url);
+		if(url!='#'){
+			location.href=url;
+		}
+	}
+
+	$('.item-left').click(function(){
+		id = $(this).attr('id');
+		// console.log(id);
+		var requrl = '#';
+		if(id=='appkey-list'){
+			requrl = "";
+		}
+		if(id=='server-list'){
+			requrl = "{% url 'server-list' %}";
+		}
+		get_data(requrl);
+	});
+	$('.content-add').click(function(){
+		id = $(this).attr('id');
+		// console.log(id);
+		var requrl = '#';
+		if(id=='appkey-add'){
+			requrl = "";
+		}
+		if(id=='server-add'){
+			requrl = "{% url 'server-add' %}";
+		}
+		get_data(requrl);
+	});
+
+
+});
+
