@@ -21,7 +21,9 @@ body {
 	height: 400px;
 	width: 110px;
 }
-
+.content-left a {
+	text-decoration:none;
+}
 .content-head {
 	height: 20px;
 }
