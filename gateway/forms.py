@@ -19,5 +19,6 @@ class MethodForm(forms.Form):
     
 class ServerForm(forms.Form):
     name = forms.CharField()
+    desc = forms.CharField()
     ip = forms.IPAddressField()
     port = forms.IntegerField()

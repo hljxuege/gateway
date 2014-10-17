@@ -96,21 +96,21 @@ $(function(){
 				<ul class="nav">
 					<li id="switchEnvBox"><a href="javascript:">（<span>北京</span>）切换城市</a>
 						<ul>
-							<li><a href="sidebar_1.html">北京</a></li>
-							<li><a href="sidebar_2.html">上海</a></li>
-							<li><a href="sidebar_2.html">南京</a></li>
-							<li><a href="sidebar_2.html">深圳</a></li>
-							<li><a href="sidebar_2.html">广州</a></li>
-							<li><a href="sidebar_2.html">天津</a></li>
-							<li><a href="sidebar_2.html">杭州</a></li>
+							<li><a href="{% get_static_prefix %}sidebar_1.html">北京</a></li>
+							<li><a href="{% get_static_prefix %}sidebar_2.html">上海</a></li>
+							<li><a href="{% get_static_prefix %}sidebar_2.html">南京</a></li>
+							<li><a href="{% get_static_prefix %}sidebar_2.html">深圳</a></li>
+							<li><a href="{% get_static_prefix %}sidebar_2.html">广州</a></li>
+							<li><a href="{% get_static_prefix %}sidebar_2.html">天津</a></li>
+							<li><a href="{% get_static_prefix %}sidebar_2.html">杭州</a></li>
 						</ul>
 					</li>
 					<li><a href="https://me.alipay.com/dwzteam" target="_blank">捐赠</a></li>
-					<li><a href="changepwd.html" target="dialog" width="600">设置</a></li>
+					<li><a href="{% get_static_prefix %}changepwd.html" target="dialog" width="600">设置</a></li>
 					<li><a href="http://www.cnblogs.com/dwzjs" target="_blank">博客</a></li>
 					<li><a href="http://weibo.com/dwzui" target="_blank">微博</a></li>
 					<li><a href="http://bbs.dwzjs.com" target="_blank">论坛</a></li>
-					<li><a href="login.html">退出</a></li>
+					<li><a href="{% get_static_prefix %}login.html">退出</a></li>
 				</ul>
 				<ul class="themeList" id="themeList">
 					<li theme="default"><div class="selected">蓝色</div></li>
@@ -137,61 +137,75 @@ $(function(){
 
 				<div class="accordion" fillSpace="sidebar">
 					<div class="accordionHeader">
+						<h2><span>Folder</span>业务组件</h2>
+					</div>
+					<div class="accordionContent">
+						<ul class="tree treeFolder">
+							<li><a href="BusiPage.html" target="navTab">业务面板</a>
+								<ul>
+									<li><a href="{% url 'server-list' %}" target="navTab" rel="main">我的主页</a></li>
+									<li><a href="http://www.baidu.com" target="navTab" rel="page1">APPKEY</a></li>
+									<li><a href="{% url 'server-list' %}" target="navTab" rel="page1">SERVER</a></li>
+									<li><a href="http://www.baidu.com" target="navTab" rel="page1">METHOD</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div class="accordionHeader">
 						<h2><span>Folder</span>界面组件</h2>
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder">
 							<li><a href="tabsPage.html" target="navTab">主框架面板</a>
 								<ul>
-									<li><a href="main.html" target="navTab" rel="main">我的主页</a></li>
-									<li><a href="http://www.baidu.com" target="navTab" rel="page1">页面一(外部页面)</a></li>
-									<li><a href="demo_page2.html" target="navTab" rel="external" external="true">iframe navTab页面</a></li>
-									<li><a href="demo_page1.html" target="navTab" rel="page1" fresh="false">替换页面一</a></li>
-									<li><a href="demo_page2.html" target="navTab" rel="page2">页面二</a></li>
-									<li><a href="demo_page4.html" target="navTab" rel="page3" title="页面三（自定义标签名）">页面三</a></li>
-									<li><a href="demo_page4.html" target="navTab" rel="page4" fresh="false">测试页面（fresh="false"）</a></li>
-									<li><a href="w_editor.html" target="navTab">表单提交会话超时</a></li>
-									<li><a href="demo/common/ajaxTimeout.html" target="navTab">navTab会话超时</a></li>
-									<li><a href="demo/common/ajaxTimeout.html" target="dialog">dialog会话超时</a></li>
-									<li><a href="index_menu.html" target="_blank">横向导航条</a></li>
+									<li><a href="{% get_static_prefix %}main.html" target="navTab" rel="main">我的主页</a></li>
+									<li><a href="{% get_static_prefix %}demo_page2.html" target="navTab" rel="external" external="true">iframe navTab页面</a></li>
+									<li><a href="{% get_static_prefix %}demo_page1.html" target="navTab" rel="page1" fresh="false">替换页面一</a></li>
+									<li><a href="{% get_static_prefix %}demo_page2.html" target="navTab" rel="page2">页面二</a></li>
+									<li><a href="{% get_static_prefix %}demo_page4.html" target="navTab" rel="page3" title="页面三（自定义标签名）">页面三</a></li>
+									<li><a href="{% get_static_prefix %}demo_page4.html" target="navTab" rel="page4" fresh="false">测试页面（fresh="false"）</a></li>
+									<li><a href="{% get_static_prefix %}w_editor.html" target="navTab">表单提交会话超时</a></li>
+									<li><a href="{% get_static_prefix %}demo/common/ajaxTimeout.html" target="navTab">navTab会话超时</a></li>
+									<li><a href="{% get_static_prefix %}demo/common/ajaxTimeout.html" target="dialog">dialog会话超时</a></li>
+									<li><a href="{% get_static_prefix %}index_menu.html" target="_blank">横向导航条</a></li>
 								</ul>
 							</li>
 							
 							<li><a>常用组件</a>
 								<ul>
-									<li><a href="w_panel.html" target="navTab" rel="w_panel">面板</a></li>
-									<li><a href="w_tabs.html" target="navTab" rel="w_tabs">选项卡面板</a></li>
-									<li><a href="w_dialog.html" target="navTab" rel="w_dialog">弹出窗口</a></li>
-									<li><a href="w_alert.html" target="navTab" rel="w_alert">提示窗口</a></li>
-									<li><a href="w_list.html" target="navTab" rel="w_list">CSS表格容器</a></li>
-									<li><a href="demo_page1.html" target="navTab" rel="w_table">表格容器</a></li>
-									<li><a href="w_removeSelected.html" target="navTab" rel="w_table">表格数据库排序+批量删除</a></li>
-									<li><a href="w_tree.html" target="navTab" rel="w_tree">树形菜单</a></li>
-									<li><a href="w_accordion.html" target="navTab" rel="w_accordion">滑动菜单</a></li>
-									<li><a href="w_editor.html" target="navTab" rel="w_editor">编辑器</a></li>
-									<li><a href="w_datepicker.html" target="navTab" rel="w_datepicker">日期控件</a></li>
-									<li><a href="demo/database/db_widget.html" target="navTab" rel="db">suggest+lookup+主从结构</a></li>
-									<li><a href="demo/database/treeBringBack.html" target="navTab" rel="db">tree查找带回</a></li>
-									<li><a href="demo/sortDrag/1.html" target="navTab" rel="sortDrag">单个sortDrag示例</a></li>
-									<li><a href="demo/sortDrag/2.html" target="navTab" rel="sortDrag">多个sortDrag示例</a></li>
+									<li><a href="{% get_static_prefix %}w_panel.html" target="navTab" rel="w_panel">面板</a></li>
+									<li><a href="{% get_static_prefix %}w_tabs.html" target="navTab" rel="w_tabs">选项卡面板</a></li>
+									<li><a href="{% get_static_prefix %}w_dialog.html" target="navTab" rel="w_dialog">弹出窗口</a></li>
+									<li><a href="{% get_static_prefix %}w_alert.html" target="navTab" rel="w_alert">提示窗口</a></li>
+									<li><a href="{% get_static_prefix %}w_list.html" target="navTab" rel="w_list">CSS表格容器</a></li>
+									<li><a href="{% get_static_prefix %}demo_page1.html" target="navTab" rel="w_table">表格容器</a></li>
+									<li><a href="{% get_static_prefix %}w_removeSelected.html" target="navTab" rel="w_table">表格数据库排序+批量删除</a></li>
+									<li><a href="{% get_static_prefix %}w_tree.html" target="navTab" rel="w_tree">树形菜单</a></li>
+									<li><a href="{% get_static_prefix %}w_accordion.html" target="navTab" rel="w_accordion">滑动菜单</a></li>
+									<li><a href="{% get_static_prefix %}w_editor.html" target="navTab" rel="w_editor">编辑器</a></li>
+									<li><a href="{% get_static_prefix %}w_datepicker.html" target="navTab" rel="w_datepicker">日期控件</a></li>
+									<li><a href="{% get_static_prefix %}demo/database/db_widget.html" target="navTab" rel="db">suggest+lookup+主从结构</a></li>
+									<li><a href="{% get_static_prefix %}demo/database/treeBringBack.html" target="navTab" rel="db">tree查找带回</a></li>
+									<li><a href="{% get_static_prefix %}demo/sortDrag/1.html" target="navTab" rel="sortDrag">单个sortDrag示例</a></li>
+									<li><a href="{% get_static_prefix %}demo/sortDrag/2.html" target="navTab" rel="sortDrag">多个sortDrag示例</a></li>
 								</ul>
 							</li>
 									
 							<li><a>表单组件</a>
 								<ul>
-									<li><a href="w_validation.html" target="navTab" rel="w_validation">表单验证</a></li>
-									<li><a href="w_button.html" target="navTab" rel="w_button">按钮</a></li>
-									<li><a href="w_textInput.html" target="navTab" rel="w_textInput">文本框/文本域</a></li>
-									<li><a href="w_combox.html" target="navTab" rel="w_combox">下拉菜单</a></li>
-									<li><a href="w_checkbox.html" target="navTab" rel="w_checkbox">多选框/单选框</a></li>
-									<li><a href="demo_upload.html" target="navTab" rel="demo_upload">iframeCallback表单提交</a></li>
-									<li><a href="w_uploadify.html" target="navTab" rel="w_uploadify">uploadify多文件上传</a></li>
+									<li><a href="{% get_static_prefix %}w_validation.html" target="navTab" rel="w_validation">表单验证</a></li>
+									<li><a href="{% get_static_prefix %}w_button.html" target="navTab" rel="w_button">按钮</a></li>
+									<li><a href="{% get_static_prefix %}w_textInput.html" target="navTab" rel="w_textInput">文本框/文本域</a></li>
+									<li><a href="{% get_static_prefix %}w_combox.html" target="navTab" rel="w_combox">下拉菜单</a></li>
+									<li><a href="{% get_static_prefix %}w_checkbox.html" target="navTab" rel="w_checkbox">多选框/单选框</a></li>
+									<li><a href="{% get_static_prefix %}demo_upload.html" target="navTab" rel="demo_upload">iframeCallback表单提交</a></li>
+									<li><a href="{% get_static_prefix %}w_uploadify.html" target="navTab" rel="w_uploadify">uploadify多文件上传</a></li>
 								</ul>
 							</li>
 							<li><a>组合应用</a>
 								<ul>
-									<li><a href="demo/pagination/layout1.html" target="navTab" rel="pagination1">局部刷新分页1</a></li>
-									<li><a href="demo/pagination/layout2.html" target="navTab" rel="pagination2">局部刷新分页2</a></li>
+									<li><a href="{% get_static_prefix %}demo/pagination/layout1.html" target="navTab" rel="pagination1">局部刷新分页1</a></li>
+									<li><a href="{% get_static_prefix %}demo/pagination/layout2.html" target="navTab" rel="pagination2">局部刷新分页2</a></li>
 								</ul>
 							</li>
 							<li><a>图表</a>
@@ -212,10 +226,10 @@ $(function(){
 					</div>
 					<div class="accordionContent">
 						<ul class="tree treeFolder treeCheck">
-							<li><a href="demo_page1.html" target="navTab" rel="demo_page1">查询我的客户</a></li>
-							<li><a href="demo_page1.html" target="navTab" rel="demo_page2">表单查询页面</a></li>
-							<li><a href="demo_page4.html" target="navTab" rel="demo_page4">表单录入页面</a></li>
-							<li><a href="demo_page5.html" target="navTab" rel="demo_page5">有文本输入的表单</a></li>
+							<li><a href="{% get_static_prefix %}demo_page1.html" target="navTab" rel="demo_page1">查询我的客户</a></li>
+							<li><a href="{% get_static_prefix %}demo_page1.html" target="navTab" rel="demo_page2">表单查询页面</a></li>
+							<li><a href="{% get_static_prefix %}demo_page4.html" target="navTab" rel="demo_page4">表单录入页面</a></li>
+							<li><a href="{% get_static_prefix %}demo_page5.html" target="navTab" rel="demo_page5">有文本输入的表单</a></li>
 							<li><a href="javascript:;">有提示的表单输入页面</a>
 								<ul>
 									<li><a href="javascript:;">页面一</a></li>
@@ -239,8 +253,8 @@ $(function(){
 					</div>
 					<div class="accordionContent">
 						<ul class="tree">
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page">列表</a></li>
-							<li><a href="newPage1.html" target="dialog" rel="dlg_page2">列表</a></li>
+							<li><a href="{% get_static_prefix %}newPage1.html" target="dialog" rel="dlg_page">列表</a></li>
+							<li><a href="{% get_static_prefix %}newPage1.html" target="dialog" rel="dlg_page2">列表</a></li>
 						</ul>
 					</div>
 				</div>
@@ -265,12 +279,12 @@ $(function(){
 					<div class="page unitBox">
 						<div class="accountInfo">
 							<div class="alertInfo">
-								<h2><a href="doc/dwz-user-guide.pdf" target="_blank">DWZ框架使用手册(PDF)</a></h2>
-								<a href="doc/dwz-user-guide.swf" target="_blank">DWZ框架演示视频</a>
+								<h2><a href="{% get_static_prefix %}doc/dwz-user-guide.pdf" target="_blank">DWZ框架使用手册(PDF)</a></h2>
+								<a href="{% get_static_prefix %}doc/dwz-user-guide.swf" target="_blank">DWZ框架演示视频</a>
 							</div>
 							<div class="right">
-								<p><a href="doc/dwz-user-guide.zip" target="_blank" style="line-height:19px">DWZ框架使用手册(CHM)</a></p>
-								<p><a href="doc/dwz-ajax-develop.swf" target="_blank" style="line-height:19px">DWZ框架Ajax开发视频教材</a></p>
+								<p><a href="{% get_static_prefix %}doc/dwz-user-guide.zip" target="_blank" style="line-height:19px">DWZ框架使用手册(CHM)</a></p>
+								<p><a href="{% get_static_prefix %}doc/dwz-ajax-develop.swf" target="_blank" style="line-height:19px">DWZ框架Ajax开发视频教材</a></p>
 							</div>
 							<p><span>DWZ富客户端框架</span></p>
 							<p>DWZ官方微博:<a href="http://weibo.com/dwzui" target="_blank">http://weibo.com/dwzui</a></p>
@@ -321,7 +335,7 @@ Error loading XML document: dwz.frag.xml
 
 	</div>
 
-	<div id="footer">Copyright &copy; 2010 <a href="demo_page2.html" target="dialog">DWZ团队</a> 京ICP备05019125号-10</div>
+	<div id="footer">Copyright &copy; 2010 <a href="{% get_static_prefix %}demo_page2.html" target="dialog">DWZ团队</a> 京ICP备05019125号-10</div>
 
 <!-- 注意此处js代码用于google站点统计，非DWZ代码，请删除 -->
 <script type="text/javascript">

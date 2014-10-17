@@ -97,7 +97,7 @@ def method_add(request):
             return render(request, 'index.html')
     else:
         f = MethodForm()
-        return render(request, 'method.html', {'form':f, 'action':reverse('method_add')})    
+        return render(request, 'method.html', {'form':f, 'action':reverse('method-add')})    
 
 def method_modify(request, obj_id):
     '''
@@ -111,7 +111,7 @@ def method_modify(request, obj_id):
             return render(request, 'index.html')
     else:
         f = MethodForm()
-        return render(request, 'method.html', {'method':method, 'action':reverse('method_modify')})  
+        return render(request, 'method.html', {'method':method, 'action':reverse('method-modify')})  
 
 def method_list(request, server_id):
     '''
@@ -126,12 +126,43 @@ def server_add(request):
     @param host: 
     '''
     if request.method == 'POST':
+        _json = { "statusCode":"304", 
+                "message":"success", 
+                "navTabId":"", 
+                "rel":"", 
+                "callbackType":"", 
+                "forwardUrl":"http://www.baidu.com", 
+                "confirmMsg":"hello" }
         f = ServerForm(request.POST)
         if f.is_valid():
-            return render(request, 'index.html')
+            server = Server()
+            server.name = f.cleaned_data['name']
+            server.desc = f.cleaned_data['desc']
+            server.ip = f.cleaned_data['ip']
+            server.port = f.cleaned_data['port']
+            
+            same_name_server = Server.objects.filter(name=server.name)
+            same_iport_server = Server.objects.filter(ip=server.ip, port=server.port)
+            if same_name_server:
+                _json.update({'message':'%s already exist'%server.name})
+            elif same_iport_server:
+                _json.update({'message':'%s %s already exist'%(server.ip, server.port)})
+            else:
+                server.save()
+                
+            return HttpResponse(json.dumps(_json))
+        else:
+            _json = { "statusCode":"200", 
+                "message":f.errors.values(), 
+                "navTabId":"", 
+                "rel":"", 
+                "callbackType":"", 
+                "forwardUrl":"http://www.baidu.com", 
+                "confirmMsg":"" }
+            return HttpResponse(json.dumps(_json))
     else:
         f = ServerForm()
-        return render(request, 'server.html', {'form':f, 'action':reverse('server_add')})  
+        return render(request, 'server.html', {'form':f, 'action':reverse('server-add')})  
 
 def server_modify(request, obj_id):
     '''
