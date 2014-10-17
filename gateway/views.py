@@ -134,6 +134,8 @@ def server_add(request):
                 "forwardUrl":"http://www.baidu.com", 
                 "confirmMsg":"hello" }
         f = ServerForm(request.POST)
+        print f
+        print f.cleaned_data
         if f.is_valid():
             server = Server()
             server.name = f.cleaned_data['name']
@@ -141,14 +143,7 @@ def server_add(request):
             server.ip = f.cleaned_data['ip']
             server.port = f.cleaned_data['port']
             
-            same_name_server = Server.objects.filter(name=server.name)
-            same_iport_server = Server.objects.filter(ip=server.ip, port=server.port)
-            if same_name_server:
-                _json.update({'message':'%s already exist'%server.name})
-            elif same_iport_server:
-                _json.update({'message':'%s %s already exist'%(server.ip, server.port)})
-            else:
-                server.save()
+            server.save()
                 
             return HttpResponse(json.dumps(_json))
         else:
