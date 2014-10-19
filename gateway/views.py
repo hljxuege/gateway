@@ -134,8 +134,6 @@ def server_add(request):
                 "forwardUrl":"http://www.baidu.com", 
                 "confirmMsg":"hello" }
         f = ServerForm(request.POST)
-        print f
-        print f.cleaned_data
         if f.is_valid():
             server = Server()
             server.name = f.cleaned_data['name']
@@ -159,11 +157,42 @@ def server_add(request):
         f = ServerForm()
         return render(request, 'server.html', {'form':f, 'action':reverse('server-add')})  
 
-def server_modify(request, obj_id):
+def server_modify(request):
     '''
     '''
-    pass
+    name = request.GET['name']
+    
+    if request.method == 'GET':
+        
+        server = Server.objects.get(name=name)
+        return render(request, 'server.html', {'server':server, 'action':reverse('server-modify')+'?name='+name})
+    else:
+        _json = { "statusCode":"200", 
+                "message":'', 
+                "navTabId":"", 
+                "rel":"", 
+                "callbackType":"", 
+                "forwardUrl":"http://www.baidu.com", 
+                "confirmMsg":"" }
+        
+        f = ServerForm(request.POST)
+        if f.is_valid():
+            server = Server.objects.get(name=name)
+            server.desc = f.cleaned_data['desc']
+            server.ip = f.cleaned_data['ip']
+            server.port = f.cleaned_data['port']
+            server.save()
+            _json.update({
+                          'message':'success'
+                          })
+            return HttpResponse(json.dumps(_json))
+        else:
+            _json.update({
+                          'message':f.errors.values()
+                          })
 
+            return HttpResponse(json.dumps(_json))
+        
 def server_list(request):
     '''
     '''

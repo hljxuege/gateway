@@ -5,19 +5,19 @@
 		<div class="pageFormContent" layoutH="56">
 			<p>
 				<label>NAME：</label>
-				<input name="name" type="text" size="30" value="100001"/>
+				<input name="name" class="required" type="text" size="20" value="{{ server.name }}" {% if server.name %}readonly="readonly"{% endif %} alt="请输入服务名称"/>
 			</p>
 			<p>
 				<label>Desc：</label>
-				<input name="desc" type="text" size="30" value="100001"/>
+				<input name="desc" class="required" type="text" size="30" value="{{ server.desc }}" alt="请输入服务描述"/>
 			</p>
 			<p>
 				<label>IP：</label>
-				<input name="ip" class="required" type="text" size="30" value="127.0.0.1" alt="请输入客户名称"/>
+				<input name="ip" class="required" type="text" size="15" value="{{ server.ip }}" alt="请输IP地址"/>
 			</p>
 			<p>
 				<label>PORT：</label>
-				<input name="port" class="required" type="text" size="30" value="8000" alt="请输入客户名称"/>
+				<input name="port" class="required" type="text" size="5" value="{{ server.port }}" alt="请输端口号"/>
 			</p>
 			
 		</div>
