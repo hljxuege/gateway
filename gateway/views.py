@@ -113,11 +113,12 @@ def method_modify(request, obj_id):
         f = MethodForm()
         return render(request, 'method.html', {'method':method, 'action':reverse('method-modify')})  
 
-def method_list(request, server_id):
+def method_list(request):
     '''
     list the server_id 's method
     '''
-    return render(request, 'method_list.html')
+    methods = Method().objects.all()
+    return render(request, 'method_list.html', {'methods':methods})
     
 def server_add(request):
     '''
@@ -135,13 +136,22 @@ def server_add(request):
                 "confirmMsg":"hello" }
         f = ServerForm(request.POST)
         if f.is_valid():
+            
+            
             server = Server()
             server.name = f.cleaned_data['name']
             server.desc = f.cleaned_data['desc']
             server.ip = f.cleaned_data['ip']
             server.port = f.cleaned_data['port']
             
-            server.save()
+            qs0 = Server.objects.filter(name=server.name)
+            qs1 = Server.objects.filter(ip=server.ip, port=server.port)
+            if qs0:
+                _json.update({'message':'same name already exist'})
+            elif qs1:
+                _json.update({'message':'same ip or port already exist'})
+            else:
+                server.save()
                 
             return HttpResponse(json.dumps(_json))
         else:
@@ -181,11 +191,17 @@ def server_modify(request):
             server.desc = f.cleaned_data['desc']
             server.ip = f.cleaned_data['ip']
             server.port = f.cleaned_data['port']
-            server.save()
-            _json.update({
-                          'message':'success'
-                          })
+            qs1 = Server.objects.filter(ip=server.ip, port=server.port)
+            if qs1:
+                _json.update({'message':'same ip or port already exist'})
+            else:
+                server.save()
+                _json.update({
+                              'message':'success'
+                              })
+                
             return HttpResponse(json.dumps(_json))
+        
         else:
             _json.update({
                           'message':f.errors.values()
