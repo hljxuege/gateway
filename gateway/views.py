@@ -179,7 +179,6 @@ def server_modify(request, server_id):
     '''
     server = Server.objects.get(id=server_id)
     if request.method == 'GET':        
-        print server
         return render(request, 'server.html', {'server':server, 'action':reverse('server-modify', args=[server_id])})
     else:
         _json = { "statusCode":"200", 
@@ -201,6 +200,8 @@ def server_modify(request, server_id):
             else:
                 server.save()
                 _json.update({
+                              "navTabId":"server-list", 
+                              "callbackType":"closeCurrent",
                               'message':'success'
                               })
                 
