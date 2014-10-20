@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^gateway/method_add/$', 'gateway.views.method_add', name='method-add'),
     # url(r'^gateway/', include('gateway.foo.urls')),
     url(r'^gateway/server_add/$', 'gateway.views.server_add', name='server-add'),
-    url(r'^gateway/server_modify/$', 'gateway.views.server_modify', name='server-modify'),
+    url(r'^gateway/server_modify/(?P<server_id>\S+)/$', 'gateway.views.server_modify', name='server-modify'),
     url(r'^gateway/server_list/$', 'gateway.views.server_list', name='server-list'),
     
     url(r'^gateway/method_list/$', 'gateway.views.method_list', name='method-list'),

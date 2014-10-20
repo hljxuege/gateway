@@ -151,6 +151,13 @@ def server_add(request):
             elif qs1:
                 _json.update({'message':'same ip or port already exist'})
             else:
+                _json = { "statusCode":"200", 
+                "message":"success", 
+                "navTabId":"server-list", 
+                "rel":"", 
+                "callbackType":"closeCurrent", 
+                "forwardUrl":"http://www.baidu.com", 
+                "confirmMsg":"hello" }
                 server.save()
                 
             return HttpResponse(json.dumps(_json))
@@ -167,15 +174,13 @@ def server_add(request):
         f = ServerForm()
         return render(request, 'server.html', {'form':f, 'action':reverse('server-add')})  
 
-def server_modify(request):
+def server_modify(request, server_id):
     '''
     '''
-    name = request.GET['name']
-    
-    if request.method == 'GET':
-        
-        server = Server.objects.get(name=name)
-        return render(request, 'server.html', {'server':server, 'action':reverse('server-modify')+'?name='+name})
+    server = Server.objects.get(id=server_id)
+    if request.method == 'GET':        
+        print server
+        return render(request, 'server.html', {'server':server, 'action':reverse('server-modify', args=[server_id])})
     else:
         _json = { "statusCode":"200", 
                 "message":'', 
@@ -187,7 +192,6 @@ def server_modify(request):
         
         f = ServerForm(request.POST)
         if f.is_valid():
-            server = Server.objects.get(name=name)
             server.desc = f.cleaned_data['desc']
             server.ip = f.cleaned_data['ip']
             server.port = f.cleaned_data['port']
@@ -200,14 +204,13 @@ def server_modify(request):
                               'message':'success'
                               })
                 
-            return HttpResponse(json.dumps(_json))
         
         else:
             _json.update({
                           'message':f.errors.values()
                           })
 
-            return HttpResponse(json.dumps(_json))
+        return HttpResponse(json.dumps(_json))
         
 def server_list(request):
     '''

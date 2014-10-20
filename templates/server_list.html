@@ -44,7 +44,7 @@
 		<ul class="toolBar">
 			<li><a class="add" href="{% url 'server-add' %}" target="navTab"><span>添加</span></a></li>
 			<!--<li><a class="delete" href="{% get_static_prefix %}demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗？" warn="请选择一个用户"><span>删除</span></a></li>-->
-			<li><a class="edit" href="{% url 'server-modify' %}?name={server_name}" target="navTab" warn="请选择一个用户"><span>修改</span></a></li>
+			<li><a class="edit" id='server-modify' href="{% url 'server-modify' 0 %}" target="navTab" warn="请选择一个用户"><span>修改</span></a></li>
 			<li class="line">line</li>
 			<!--
 			<li><a class="icon" href="{% get_static_prefix %}demo/common/dwz-team.xls" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
@@ -64,7 +64,7 @@
 		</thead>
 		<tbody>
 			{% for server in servers %}
-			<tr target="server_name" rel="{{ server.name }}">
+			<tr target="server_id" rel="{{ server.id }}">
 				<td>{{ server.name }}</td>
 				<td>{{ server.desc }}</td>
 				<td>{{ server.ip }}</td>
@@ -95,3 +95,13 @@
 	</div>
 
 </div>
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function(){
+    l = $('#server-modify').attr('href');
+    //console.log(l);
+	link = l.replace('/0/', '/{server_id}/');
+	$('#server-modify').attr('href', link);
+});
+</script>
+{% endblock %}

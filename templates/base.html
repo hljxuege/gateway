@@ -145,8 +145,8 @@ $(function(){
 								<ul>
 									<li><a href="{% url 'server-list' %}" target="navTab" rel="main">我的主页</a></li>
 									<li><a href="http://www.baidu.com" target="navTab" rel="page1">APPKEY</a></li>
-									<li><a href="{% url 'server-list' %}" target="navTab" rel="page1">SERVER</a></li>
-									<li><a href="http://www.baidu.com" target="navTab" rel="page1">METHOD</a></li>
+									<li><a href="{% url 'server-list' %}" target="navTab" rel="server-list">SERVER</a></li>
+									<li><a href="{% url 'method-list' %}" target="navTab" rel="page1">METHOD</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -336,7 +336,7 @@ Error loading XML document: dwz.frag.xml
 	</div>
 
 	<div id="footer">Copyright &copy; 2010 <a href="{% get_static_prefix %}demo_page2.html" target="dialog">DWZ团队</a> 京ICP备05019125号-10</div>
-
+{% block js %}
 <!-- 注意此处js代码用于google站点统计，非DWZ代码，请删除 -->
 <script type="text/javascript">
   var _gaq = _gaq || [];
@@ -349,6 +349,6 @@ Error loading XML document: dwz.frag.xml
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
-
+{% endblock %}
 </body>
 </html>
