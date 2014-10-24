@@ -15,6 +15,8 @@ urlpatterns = patterns('',
     url(r'^gateway/server_list/$', 'gateway.views.server_list', name='server-list'),
     
     url(r'^gateway/method_list/$', 'gateway.views.method_list', name='method-list'),
+    url(r'^gateway/method_add/$', 'gateway.views.method_add', name='method-add'),
+    url(r'^gateway/method_modify/(?P<method_id>\S+)/$', 'gateway.views.method_modify', name='method-modify'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

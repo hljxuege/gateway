@@ -15,9 +15,9 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="{% url 'server-add' %}" target="navTab"><span>添加</span></a></li>
+			<li><a class="add" href="{% url 'method-add' %}" target="navTab"><span>添加</span></a></li>
 			<!--<li><a class="delete" href="{% get_static_prefix %}demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗？" warn="请选择一个用户"><span>删除</span></a></li>-->
-			<li><a class="edit" href="{% url 'server-modify' %}?name={server_name}" target="navTab" warn="请选择一个用户"><span>修改</span></a></li>
+			<li><a class="edit" id="method-modify" href="{% url 'method-modify' 0 %}" target="navTab" warn="请选择一个用户"><span>修改</span></a></li>
 			<li class="line">line</li>
 			<!--
 			<li><a class="icon" href="{% get_static_prefix %}demo/common/dwz-team.xls" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
@@ -31,17 +31,17 @@
 			<tr>
 				<th width="80" orderField="name" class="asc">name</th>
 				<th width="100" orderField="desc" class="desc">desc</th>
-				<th width="100" orderField="num" class="desc">ip</th>
-				<th width="100" orderField="port" class="desc">port</th>
+				<th width="100" orderField="num" class="desc">url</th>
+				<th width="100" orderField="port" class="desc"></th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for server in servers %}
-			<tr target="server_name" rel="{{ server.name }}">
-				<td>{{ server.name }}</td>
-				<td>{{ server.desc }}</td>
-				<td>{{ server.ip }}</td>
-				<td>{{ server.port }}</td>
+			{% for method in methods %}
+			<tr target="method_id" rel="{{ method.id }}">
+				<td>{{ method.name }}</td>
+				<td>{{ method.desc }}</td>
+				<td>{{ method.url }}</td>
+				<td></td>
  
 			</tr>
 			{% endfor %}
@@ -68,3 +68,13 @@
 	</div>
 
 </div>
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function(){
+    l = $('#method-modify').attr('href');
+    console.log(l);
+	link = l.replace('/0/', '/{method_id}/');
+	$('#method-modify').attr('href', link);
+});
+</script>
+{% endblock %}

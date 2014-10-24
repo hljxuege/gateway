@@ -117,7 +117,7 @@ def method_list(request):
     '''
     list the server_id 's method
     '''
-    methods = Method().objects.all()
+    methods = Method.objects.all()
     return render(request, 'method_list.html', {'methods':methods})
     
 def server_add(request):
