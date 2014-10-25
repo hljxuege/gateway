@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from gateway.forms import GatewayForm, MethodForm, ServerForm
-from models import Method, Appkey, Server
+from .models import Method, Appkey, Server
 _json = { "statusCode":"304", 
         "message":"success", 
         "navTabId":"", 
@@ -291,7 +291,7 @@ def server_modify(request, server_id):
             server.ip = f.cleaned_data['ip']
             server.port = f.cleaned_data['port']
             qs0 = Server.objects.filter(name=server.name, id__ne=server_id)
-            qs1 = Server.objects.filter(ip=server.ip, port=server.port)
+            qs1 = Server.objects.filter(ip=server.ip, port=server.port, id__ne=server_id)
             if qs0:
                 _json.update({'message':'same name already exist'})
             if qs1:
