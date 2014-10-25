@@ -9,11 +9,17 @@ import json
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 
 from gateway.forms import GatewayForm, MethodForm, ServerForm
 from models import Method, Appkey, Server
-
+_json = { "statusCode":"304", 
+        "message":"success", 
+        "navTabId":"", 
+        "rel":"", 
+        "callbackType":"", 
+        "forwardUrl":"http://www.baidu.com", 
+        "confirmMsg":"hello" }
 
 def index(request):
     return render(request, 'index.html')
@@ -90,28 +96,118 @@ def method_add(request):
     @param url: 
     
     '''
-    
+    _json = { "statusCode":"304", 
+        "message":"success", 
+        "navTabId":"", 
+        "rel":"", 
+        "callbackType":"", 
+        "forwardUrl":"http://www.baidu.com", 
+        "confirmMsg":"hello" }
     if request.method == 'POST':
-        f = MethodForm(request.POST)
-        if f.is_valid():
-            return render(request, 'index.html')
+        
+        method = Method()
+        method.name = request.POST['name']
+        qs0 = Method.objects.filter(name=method.name)
+        if qs0:
+            _json.update({'message':'same name already exist'})
+        else:    
+            method.desc = request.POST['desc']
+            server_id = request.POST['server.id']
+            method.server = Server.objects.get(id=server_id)
+            method.url = {}
+            params = request.POST.dict()
+            v_dict = {}
+            u_dict = {}
+            for k, v in params.items():
+                if k.startswith('urls'):
+                    _k, _v = k.split('.')
+                    if _v == 'version':
+                        v_dict.update({
+                                  _k:v
+                                  })
+                    elif _v == 'suburl':
+                        u_dict.update({_k:v})
+                    else:
+                        pass
+            
+            url = {}
+            for k, v in v_dict.items():
+                url.update({v: u_dict[k]})
+            
+            method.url.update(url)
+            
+            _json = { "statusCode":"200", 
+            "message":"success", 
+            "navTabId":"method-list", 
+            "rel":"", 
+            "callbackType":"closeCurrent", 
+            "forwardUrl":"http://www.baidu.com", 
+            "confirmMsg":"hello" }
+            
+            method.save()
+            
+        return HttpResponse(json.dumps(_json))
     else:
         f = MethodForm()
         return render(request, 'method.html', {'form':f, 'action':reverse('method-add')})    
 
-def method_modify(request, obj_id):
+def method_modify(request, method_id):
     '''
     @param obj_id: method id
     @param param: other attribute
     '''
-    method = get_object_or_404(Method, id=obj_id)
+    _json = { "statusCode":"304", 
+        "message":"success", 
+        "navTabId":"", 
+        "rel":"", 
+        "callbackType":"", 
+        "forwardUrl":"http://www.baidu.com", 
+        "confirmMsg":"hello" }
+    method = Method.objects.get(id=method_id)
     if request.method == 'POST':
-        f = MethodForm(request.POST)
-        if f.is_valid():
-            return render(request, 'index.html')
+        method.name = request.POST['name']
+        qs0 = Method.objects.filter(name=method.name, id__ne=method_id)
+        if qs0:
+            _json.update({'message':'same name already exist'})
+            
+        else:
+            method.desc = request.POST['desc']
+            server_id = request.POST['server.id']
+            method.server = Server.objects.get(id=server_id)
+            method.url = {}
+            params = request.POST.dict()
+            v_dict = {}
+            u_dict = {}
+            for k, v in params.items():
+                if k.startswith('urls'):
+                    _k, _v = k.split('.')
+                    if _v == 'version':
+                        v_dict.update({_k:v})
+                    elif _v == 'suburl':
+                        u_dict.update({_k:v})
+                    else:
+                        pass
+            
+            url = {}
+            for k, v in v_dict.items():
+                url.update({v: u_dict[k]})
+            
+            method.url.update(url)
+            
+            _json = { "statusCode":"200", 
+            "message":"success", 
+            "navTabId":"method-list", 
+            "rel":"", 
+            "callbackType":"closeCurrent", 
+            "forwardUrl":"http://www.baidu.com", 
+            "confirmMsg":"hello" }
+            
+            method.save()
+                
+        return HttpResponse(json.dumps(_json))
     else:
-        f = MethodForm()
-        return render(request, 'method.html', {'method':method, 'action':reverse('method-modify')})  
+        
+        return render(request, 'method.html', {'method':method, 'action':reverse('method-modify', args=[method_id])})  
 
 def method_list(request):
     '''
@@ -194,7 +290,10 @@ def server_modify(request, server_id):
             server.desc = f.cleaned_data['desc']
             server.ip = f.cleaned_data['ip']
             server.port = f.cleaned_data['port']
+            qs0 = Server.objects.filter(name=server.name, id__ne=server_id)
             qs1 = Server.objects.filter(ip=server.ip, port=server.port)
+            if qs0:
+                _json.update({'message':'same name already exist'})
             if qs1:
                 _json.update({'message':'same ip or port already exist'})
             else:
@@ -218,7 +317,11 @@ def server_list(request):
     '''
     servers = Server.objects.all()
     return render(request, 'server_list.html', {'servers':servers})
-  
+
+def servers(request):
+    servers = Server.objects.all()
+    return render(request, 'servers.html', {'servers':servers})
+      
 def appkey_add(request):
     '''
     @param name: 
