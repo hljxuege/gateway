@@ -15,12 +15,18 @@ class GatewayForm(forms.Form):
 
 class MethodForm(forms.Form): 
     name = forms.CharField()
-    version = forms.CharField()
-    url = forms.CharField()   
+    version = forms.CharField() 
     
 class ServerForm(forms.Form):
     name = forms.CharField()
     desc = forms.CharField()
     ip = forms.IPAddressField()
     port = forms.IntegerField()
+    
+class AppkeyForm(forms.Form):
+    
+    name = forms.CharField()
+    desc = forms.CharField()
+    secert_key = forms.CharField() 
+    
     

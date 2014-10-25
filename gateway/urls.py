@@ -18,6 +18,11 @@ urlpatterns = patterns('',
     url(r'^gateway/method_list/$', 'gateway.views.method_list', name='method-list'),
     url(r'^gateway/method_add/$', 'gateway.views.method_add', name='method-add'),
     url(r'^gateway/method_modify/(?P<method_id>\S+)/$', 'gateway.views.method_modify', name='method-modify'),
+    
+    url(r'^gateway/appkey_list/$', 'gateway.views.appkey_list', name='appkey-list'),
+    url(r'^gateway/appkey_modify/(?P<appkey_id>\S+)/$', 'gateway.views.appkey_modify', name='appkey-modify'),
+    url(r'^gateway/appkey_add/$', 'gateway.views.appkey_add', name='appkey-add'),
+    url(r'^gateway/methods/$', 'gateway.views.methods', name='methods'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

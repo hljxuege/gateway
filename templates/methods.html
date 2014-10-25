@@ -1,0 +1,21 @@
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="58">
+		<ul class="tree expand">
+		   {% for m in methods%}
+			<li><a href="javascript:">{{ m.name }}</a>
+				<ul>
+				    {% for v, su in m.url.items %}
+					<li><a href="javascript:" onclick="$.bringBack({id:'{{ m.id }}', version:'{{ v }}')">{{ v }}</a></li>
+					{% endfor %}
+				</ul>
+			</li>
+			{% endfor %}
+ 
+	</div>
+	
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
+		</ul>
+	</div>
+</div>
