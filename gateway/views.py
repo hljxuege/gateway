@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from gateway.forms import GatewayForm, MethodForm, ServerForm
+from gateway.forms import GatewayForm, MethodForm, ServerForm, AppkeyForm
 from .models import Method, Appkey, Server
 _json = { "statusCode":"304", 
         "message":"success", 
@@ -215,6 +215,12 @@ def method_list(request):
     '''
     methods = Method.objects.all()
     return render(request, 'method_list.html', {'methods':methods})
+
+def methods(request):
+    '''
+    '''
+    methods = Method.objects.all()
+    return render(request, 'methods.html', {'methods':methods})
     
 def server_add(request):
     '''
@@ -327,9 +333,122 @@ def appkey_add(request):
     @param name: 
     @param secert_key: 
     '''
-    pass
+    if request.method == 'GET':        
+        return render(request, 'appkey.html', {'action':reverse('appkey-add')})
+    else:
+        _json = { "statusCode":"200", 
+                "message":'', 
+                "navTabId":"", 
+                "rel":"", 
+                "callbackType":"", 
+                "forwardUrl":"http://www.baidu.com", 
+                "confirmMsg":"" }
+        
+        f = AppkeyForm(request.POST)
+        if f.is_valid():
+            appkey = Appkey()
+            appkey.desc = request.POST['desc']
+            appkey.secert_key = request.POST['secert_key']
+            appkey.name = request.POST['name']
+            qs0 = Appkey.objects.filter(name=appkey.name)
+            if qs0:
+                _json.update({'message':'same name already exist'})
+            else:
+                #access 
+                params = request.POST.dict()
+                m_dict = {}
+                v_dict = {}
+                for k, v in params.items():
+                    if k.startswith('access'):
+                        _k, _v = k.split('.')
+                        if _v == 'method':
+                            m_dict.update({_k:v})
+                        elif _v == 'version':
+                            v_dict.update({_k:v})
+                        else:
+                            pass
+                
+                access = {}
+                for k, v in m_dict.items():
+                    access.update({v: v_dict[k]})
+                
+                appkey.access.update(access)
+                
+                appkey.save()
+                _json.update({
+                              "navTabId":"appkey-list", 
+                              "callbackType":"closeCurrent",
+                              'message':'success'
+                              })
+                
+        
+        else:
+            _json.update({
+                          'message':f.errors.values()
+                          })
 
-def appkey_modify(request, obj_id):
+        return HttpResponse(json.dumps(_json))
+
+def appkey_modify(request, appkey_id):
     '''
     @param : 
     '''
+    appkey = Appkey.objects.get(id=appkey_id)
+    if request.method == 'GET':        
+        return render(request, 'appkey.html', {'appkey':appkey, 'action':reverse('appkey-modify', args=[appkey_id])})
+    else:
+        _json = { "statusCode":"200", 
+                "message":'', 
+                "navTabId":"", 
+                "rel":"", 
+                "callbackType":"", 
+                "forwardUrl":"http://www.baidu.com", 
+                "confirmMsg":"" }
+        
+        f = AppkeyForm(request.POST)
+        if f.is_valid():
+            appkey.desc = request.POST['desc']
+            appkey.secert_key = request.POST['secert_key']
+            appkey.name = request.POST['name']
+            qs0 = Appkey.objects.filter(name=appkey.name, id__ne=appkey_id)
+            if qs0:
+                _json.update({'message':'same name already exist'})
+            else:
+                #access 
+                params = request.POST.dict()
+                m_dict = {}
+                v_dict = {}
+                for k, v in params.items():
+                    if k.startswith('access'):
+                        _k, _v = k.split('.')
+                        if _v == 'method':
+                            m_dict.update({_k:v})
+                        elif _v == 'version':
+                            v_dict.update({_k:v})
+                        else:
+                            pass
+                
+                access = {}
+                for k, v in m_dict.items():
+                    access.update({v: v_dict[k]})
+                
+                appkey.access.update(access)
+                
+                appkey.save()
+                _json.update({
+                              "navTabId":"appkey-list", 
+                              "callbackType":"closeCurrent",
+                              'message':'success'
+                              })
+                
+        
+        else:
+            _json.update({
+                          'message':f.errors.values()
+                          })
+
+        return HttpResponse(json.dumps(_json))
+
+def appkey_list(request):
+    appkeys = Appkey.objects.all()
+    return render(request, 'appkey_list.html', {'appkeys':appkeys})
