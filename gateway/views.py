@@ -13,13 +13,6 @@ from django.shortcuts import render
 
 from gateway.forms import GatewayForm, MethodForm, ServerForm, AppkeyForm
 from .models import Method, Appkey, Server
-_json = { "statusCode":"304", 
-        "message":"success", 
-        "navTabId":"", 
-        "rel":"", 
-        "callbackType":"", 
-        "forwardUrl":"http://www.baidu.com", 
-        "confirmMsg":"hello" }
 
 def index(request):
     return render(request, 'index.html')
@@ -88,6 +81,27 @@ def gateway(request):
     except Exception, e:
         data = {'status':-1, 'msg':str(e)}
     return HttpResponse(json.dumps(data))
+def _parse_url(request):
+    params = request.POST.dict()
+    v_dict = {}
+    u_dict = {}
+    for k, v in params.items():
+        if k.startswith('urls'):
+            _k, _v = k.split('.')
+            if _v == 'version':
+                v_dict.update({
+                          _k:v
+                          })
+            elif _v == 'suburl':
+                u_dict.update({_k:v})
+            else:
+                pass
+    
+    url = {}
+    for k, v in v_dict.items():
+        url.update({v: u_dict[k]})
+    
+    return url
 
 def method_add(request):
     '''
@@ -114,25 +128,8 @@ def method_add(request):
             method.desc = request.POST['desc']
             server_id = request.POST['server.id']
             method.server = Server.objects.get(id=server_id)
-            method.url = {}
-            params = request.POST.dict()
-            v_dict = {}
-            u_dict = {}
-            for k, v in params.items():
-                if k.startswith('urls'):
-                    _k, _v = k.split('.')
-                    if _v == 'version':
-                        v_dict.update({
-                                  _k:v
-                                  })
-                    elif _v == 'suburl':
-                        u_dict.update({_k:v})
-                    else:
-                        pass
-            
-            url = {}
-            for k, v in v_dict.items():
-                url.update({v: u_dict[k]})
+            # url 
+            url = _parse_url(request)
             
             method.url.update(url)
             
@@ -174,23 +171,8 @@ def method_modify(request, method_id):
             method.desc = request.POST['desc']
             server_id = request.POST['server.id']
             method.server = Server.objects.get(id=server_id)
-            method.url = {}
-            params = request.POST.dict()
-            v_dict = {}
-            u_dict = {}
-            for k, v in params.items():
-                if k.startswith('urls'):
-                    _k, _v = k.split('.')
-                    if _v == 'version':
-                        v_dict.update({_k:v})
-                    elif _v == 'suburl':
-                        u_dict.update({_k:v})
-                    else:
-                        pass
-            
-            url = {}
-            for k, v in v_dict.items():
-                url.update({v: u_dict[k]})
+            # url 
+            url = _parse_url(request)
             
             method.url.update(url)
             
@@ -327,7 +309,27 @@ def server_list(request):
 def servers(request):
     servers = Server.objects.all()
     return render(request, 'servers.html', {'servers':servers})
-      
+
+def _parse_access(request):
+    params = request.POST.dict()
+    m_dict = {}
+    v_dict = {}
+    for k, v in params.items():
+        if k.startswith('access'):
+            _k, _v = k.split('.')
+            if _v == 'method':
+                m_dict.update({_k:v})
+            elif _v == 'version':
+                v_dict.update({_k:v})
+            else:
+                pass
+    
+    access = {}
+    for k, v in m_dict.items():
+        access.update({v: v_dict[k]})
+    
+    return access 
+
 def appkey_add(request):
     '''
     @param name: 
@@ -355,23 +357,7 @@ def appkey_add(request):
                 _json.update({'message':'same name already exist'})
             else:
                 #access 
-                params = request.POST.dict()
-                m_dict = {}
-                v_dict = {}
-                for k, v in params.items():
-                    if k.startswith('access'):
-                        _k, _v = k.split('.')
-                        if _v == 'method':
-                            m_dict.update({_k:v})
-                        elif _v == 'version':
-                            v_dict.update({_k:v})
-                        else:
-                            pass
-                
-                access = {}
-                for k, v in m_dict.items():
-                    access.update({v: v_dict[k]})
-                
+                access = _parse_access(request)                
                 appkey.access.update(access)
                 
                 appkey.save()
@@ -415,23 +401,7 @@ def appkey_modify(request, appkey_id):
                 _json.update({'message':'same name already exist'})
             else:
                 #access 
-                params = request.POST.dict()
-                m_dict = {}
-                v_dict = {}
-                for k, v in params.items():
-                    if k.startswith('access'):
-                        _k, _v = k.split('.')
-                        if _v == 'method':
-                            m_dict.update({_k:v})
-                        elif _v == 'version':
-                            v_dict.update({_k:v})
-                        else:
-                            pass
-                
-                access = {}
-                for k, v in m_dict.items():
-                    access.update({v: v_dict[k]})
-                
+                access = _parse_access(request)                
                 appkey.access.update(access)
                 
                 appkey.save()
