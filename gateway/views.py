@@ -34,7 +34,7 @@ def response_json(**kwargs):
     if kwargs:
         json.update(kwargs)
         if kwargs.has_key('message'):
-            json.update({'statusCode':"403"})
+            json.update({'statusCode':"300"})
     
     return json
 
