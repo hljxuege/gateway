@@ -13,8 +13,8 @@
 			</p>
 			<p>
 				<label>SERVER：</label>
-				<input name="server.id" value="" type="hidden"/>
-				<input class="required" name="server.name" type="text" readonly/>
+				<input name="server.id" value="{{ method.server.id }}" type="hidden"/>
+				<input class="required" name="server.name"  value="{{ method.server.name }}" type="text" readonly/>
 				<a class="btnLook" href="{% url 'servers' %}" lookupGroup="server">查找带回</a>	
 			</p>
 		<div class="divider"></div>
