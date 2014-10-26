@@ -291,7 +291,27 @@ def _parse_access(request):
     for k, v in m_dict.items():
         access.update({v: v_dict[k]})
     
-    return access 
+    msg = []
+    if access:
+        aks = access.keys()
+        mds = Method.objects.filter(name__in=aks)
+        
+        for a in aks:
+            method = None
+            for m in mds:
+                if m.name == a:
+                    method = m
+                    
+            if method:
+                v = access[a]
+                if method.url.has_key(v):
+                    pass
+                else:
+                    msg.append('no name %s with version%s'% (a, v))
+            else:
+                msg.append('no name %s'% a)
+            
+    return access, ','.join(msg)
 
 def appkey_add(request):
     '''
@@ -313,16 +333,17 @@ def appkey_add(request):
                 _json = response_json(message='same name already exist')
             else:
                 #access 
-                access = _parse_access(request)                
-                appkey.access.update(access)
-                
-                appkey.save()
-                _json = response_json(navTabId='appkey-list', callbackType='closeCurrent')
+                access, msg = _parse_access(request)  
+                if msg:
+                    _json = response_json(message=msg)
+                else:                 
+                    appkey.access.update(access)
+                    
+                    appkey.save()
+                    _json = response_json(navTabId='appkey-list', callbackType='closeCurrent')
         
         else:
-            _json.update({
-                          'message':f.errors.values()
-                          })
+            _json = response_json(message=f.errors.values())
 
         return HttpResponse(json.dumps(_json))
 
@@ -345,11 +366,14 @@ def appkey_modify(request, appkey_id):
                 _json = response_json(message='same name already exist')
             else:
                 #access 
-                access = _parse_access(request)                
-                appkey.access.update(access)
-                
-                appkey.save()
-                _json = response_json(navTabId='appkey-list', callbackType='closeCurrent')
+                access, msg = _parse_access(request)   
+                if msg:
+                    _json = response_json(message=msg)
+                else:             
+                    appkey.access.update(access)
+                    
+                    appkey.save()
+                    _json = response_json(navTabId='appkey-list', callbackType='closeCurrent')
         
         else:
             _json = response_json(message=f.errors.values())
