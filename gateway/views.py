@@ -13,6 +13,10 @@ from django.shortcuts import render
 
 from gateway.forms import GatewayForm, MethodForm, ServerForm, AppkeyForm
 from .models import Method, Appkey, Server
+from mongoengine.django.shortcuts import get_document_or_404
+import urllib
+import logging
+logger = logging.getLogger('django')
 '''
 json demo
             _json = { "statusCode":"200", 
@@ -81,10 +85,10 @@ def gateway(request):
         #check sign
         
         #get method
-        method = get_object_or_404(Method, name=_method)
+        method = get_document_or_404(Method, name=_method)
         
         #get appkey
-        appkey = get_object_or_404(Appkey, name=_appkey)
+        appkey = get_document_or_404(Appkey, name=_appkey)
         
         if method.url.has_key(_version):
             uri = method.url[_version]
@@ -92,13 +96,15 @@ def gateway(request):
             raise Exception('no url found')
         
         #get server's ip and host
-        pass
+        server = method.server
         
         # combine ip port uri
-        pass
-    
+        req = "http://%s:%s/%s"%(server.ip, server.port, uri)
+        logger.info(req)
         #request 
-        pass
+        request = urllib.urlopen(req)
+        response = request.read()
+        logger.info(response)
         #proess return
         
         data = {'status':0, 'msg':'ok'}
