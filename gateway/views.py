@@ -15,6 +15,7 @@ from gateway.forms import GatewayForm, MethodForm, ServerForm, AppkeyForm
 from .models import Method, Appkey, Server
 from mongoengine.django.shortcuts import get_document_or_404
 import urllib
+import uuid
 import logging
 logger = logging.getLogger('django')
 '''
@@ -77,6 +78,7 @@ def gateway(request):
     @param: params 一系列方法的请求参数
     '''
     try:
+        uuid_str = str(uuid.uuid4())
         _appkey, _method, _version, _nonce, _sign = _parse_request(request)
         
         #check nonce
@@ -100,17 +102,18 @@ def gateway(request):
         
         # combine ip port uri
         req = "http://%s:%s/%s"%(server.ip, server.port, uri)
-        logger.info(req)
+        logger.info('REQ-%s-%s'%(uuid_str, req))
         #request 
         request = urllib.urlopen(req)
-        response = request.read()
-        logger.info(response)
+        res = request.read()
+        logger.info('RES-%s-%s'%(uuid_str, res))
         #proess return
         
-        data = {'status':0, 'msg':'ok'}
+        result = {'status':0, 'msg':'ok'}
+#         result = res
     except Exception, e:
-        data = {'status':-1, 'msg':str(e)}
-    return HttpResponse(json.dumps(data))
+        result = {'status':-1, 'msg':str(e)}
+    return HttpResponse(json.dumps(result))
 def _parse_url(request):
     params = request.POST.dict()
     v_dict = {}
