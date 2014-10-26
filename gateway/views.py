@@ -13,6 +13,30 @@ from django.shortcuts import render
 
 from gateway.forms import GatewayForm, MethodForm, ServerForm, AppkeyForm
 from .models import Method, Appkey, Server
+'''
+json demo
+            _json = { "statusCode":"200", 
+            "message":"success", 
+            "navTabId":"method-list", 
+            "rel":"", 
+            "callbackType":"closeCurrent", 
+            "forwardUrl":"http://www.baidu.com", 
+            "confirmMsg":"hello" }
+'''
+def response_json(**kwargs):
+    json = { "statusCode":"200", 
+            "message":"success", 
+            "navTabId":"",#"method-list", 
+            "rel":"", 
+            "callbackType":"",#"closeCurrent", 
+            "forwardUrl":"http://www.baidu.com", 
+            "confirmMsg":"hello" }
+    if kwargs:
+        json.update(kwargs)
+        if kwargs.has_key('message'):
+            json.update({'statusCode':"403"})
+    
+    return json
 
 def index(request):
     return render(request, 'index.html')
@@ -110,20 +134,14 @@ def method_add(request):
     @param url: 
     
     '''
-    _json = { "statusCode":"304", 
-        "message":"success", 
-        "navTabId":"", 
-        "rel":"", 
-        "callbackType":"", 
-        "forwardUrl":"http://www.baidu.com", 
-        "confirmMsg":"hello" }
+
     if request.method == 'POST':
         
         method = Method()
         method.name = request.POST['name']
         qs0 = Method.objects.filter(name=method.name)
         if qs0:
-            _json.update({'message':'same name already exist'})
+            _json = response_json(message='same name already exist')
         else:    
             method.desc = request.POST['desc']
             server_id = request.POST['server.id']
@@ -133,14 +151,7 @@ def method_add(request):
             
             method.url.update(url)
             
-            _json = { "statusCode":"200", 
-            "message":"success", 
-            "navTabId":"method-list", 
-            "rel":"", 
-            "callbackType":"closeCurrent", 
-            "forwardUrl":"http://www.baidu.com", 
-            "confirmMsg":"hello" }
-            
+            _json = response_json(navTabId="method-list", callbackType='closeCurrent')
             method.save()
             
         return HttpResponse(json.dumps(_json))
@@ -153,37 +164,22 @@ def method_modify(request, method_id):
     @param obj_id: method id
     @param param: other attribute
     '''
-    _json = { "statusCode":"304", 
-        "message":"success", 
-        "navTabId":"", 
-        "rel":"", 
-        "callbackType":"", 
-        "forwardUrl":"http://www.baidu.com", 
-        "confirmMsg":"hello" }
     method = Method.objects.get(id=method_id)
     if request.method == 'POST':
         method.name = request.POST['name']
         qs0 = Method.objects.filter(name=method.name, id__ne=method_id)
         if qs0:
-            _json.update({'message':'same name already exist'})
+            _json = response_json(message='same name already exist')
             
         else:
             method.desc = request.POST['desc']
             server_id = request.POST['server.id']
             method.server = Server.objects.get(id=server_id)
             # url 
-            url = _parse_url(request)
-            
+            url = _parse_url(request)            
             method.url.update(url)
             
-            _json = { "statusCode":"200", 
-            "message":"success", 
-            "navTabId":"method-list", 
-            "rel":"", 
-            "callbackType":"closeCurrent", 
-            "forwardUrl":"http://www.baidu.com", 
-            "confirmMsg":"hello" }
-            
+            _json = response_json(navTabId="method-list", callbackType='closeCurrent')            
             method.save()
                 
         return HttpResponse(json.dumps(_json))
@@ -211,13 +207,6 @@ def server_add(request):
     @param host: 
     '''
     if request.method == 'POST':
-        _json = { "statusCode":"304", 
-                "message":"success", 
-                "navTabId":"", 
-                "rel":"", 
-                "callbackType":"", 
-                "forwardUrl":"http://www.baidu.com", 
-                "confirmMsg":"hello" }
         f = ServerForm(request.POST)
         if f.is_valid():
             
@@ -231,28 +220,16 @@ def server_add(request):
             qs0 = Server.objects.filter(name=server.name)
             qs1 = Server.objects.filter(ip=server.ip, port=server.port)
             if qs0:
-                _json.update({'message':'same name already exist'})
+                _json = response_json(message='same name already exist')
             elif qs1:
-                _json.update({'message':'same ip or port already exist'})
+                _json = response_json(message='same ip or port already exist')
             else:
-                _json = { "statusCode":"200", 
-                "message":"success", 
-                "navTabId":"server-list", 
-                "rel":"", 
-                "callbackType":"closeCurrent", 
-                "forwardUrl":"http://www.baidu.com", 
-                "confirmMsg":"hello" }
+                _json = response_json(navTabId="server-list", callbackType='closeCurrent')
                 server.save()
                 
             return HttpResponse(json.dumps(_json))
         else:
-            _json = { "statusCode":"200", 
-                "message":f.errors.values(), 
-                "navTabId":"", 
-                "rel":"", 
-                "callbackType":"", 
-                "forwardUrl":"http://www.baidu.com", 
-                "confirmMsg":"" }
+            _json = response_json(navTabId='', message=f.errors.values())
             return HttpResponse(json.dumps(_json))
     else:
         f = ServerForm()
@@ -265,13 +242,6 @@ def server_modify(request, server_id):
     if request.method == 'GET':        
         return render(request, 'server.html', {'server':server, 'action':reverse('server-modify', args=[server_id])})
     else:
-        _json = { "statusCode":"200", 
-                "message":'', 
-                "navTabId":"", 
-                "rel":"", 
-                "callbackType":"", 
-                "forwardUrl":"http://www.baidu.com", 
-                "confirmMsg":"" }
         
         f = ServerForm(request.POST)
         if f.is_valid():
@@ -281,22 +251,15 @@ def server_modify(request, server_id):
             qs0 = Server.objects.filter(name=server.name, id__ne=server_id)
             qs1 = Server.objects.filter(ip=server.ip, port=server.port, id__ne=server_id)
             if qs0:
-                _json.update({'message':'same name already exist'})
-            if qs1:
-                _json.update({'message':'same ip or port already exist'})
+                _json = response_json(message='same name already exist')
+            elif qs1:
+                _json = response_json(message='same ip or port already exist')
             else:
                 server.save()
-                _json.update({
-                              "navTabId":"server-list", 
-                              "callbackType":"closeCurrent",
-                              'message':'success'
-                              })
-                
+                _json = response_json(navTabId='server-list', callbackType='closeCurrent')
         
         else:
-            _json.update({
-                          'message':f.errors.values()
-                          })
+            _json = response_json(navTabId='', message=f.errors.values())
 
         return HttpResponse(json.dumps(_json))
         
@@ -338,13 +301,6 @@ def appkey_add(request):
     if request.method == 'GET':        
         return render(request, 'appkey.html', {'action':reverse('appkey-add')})
     else:
-        _json = { "statusCode":"200", 
-                "message":'', 
-                "navTabId":"", 
-                "rel":"", 
-                "callbackType":"", 
-                "forwardUrl":"http://www.baidu.com", 
-                "confirmMsg":"" }
         
         f = AppkeyForm(request.POST)
         if f.is_valid():
@@ -354,19 +310,14 @@ def appkey_add(request):
             appkey.name = request.POST['name']
             qs0 = Appkey.objects.filter(name=appkey.name)
             if qs0:
-                _json.update({'message':'same name already exist'})
+                _json = response_json(message='same name already exist')
             else:
                 #access 
                 access = _parse_access(request)                
                 appkey.access.update(access)
                 
                 appkey.save()
-                _json.update({
-                              "navTabId":"appkey-list", 
-                              "callbackType":"closeCurrent",
-                              'message':'success'
-                              })
-                
+                _json = response_json(navTabId='appkey-list', callbackType='closeCurrent')
         
         else:
             _json.update({
@@ -383,13 +334,6 @@ def appkey_modify(request, appkey_id):
     if request.method == 'GET':        
         return render(request, 'appkey.html', {'appkey':appkey, 'action':reverse('appkey-modify', args=[appkey_id])})
     else:
-        _json = { "statusCode":"200", 
-                "message":'', 
-                "navTabId":"", 
-                "rel":"", 
-                "callbackType":"", 
-                "forwardUrl":"http://www.baidu.com", 
-                "confirmMsg":"" }
         
         f = AppkeyForm(request.POST)
         if f.is_valid():
@@ -398,24 +342,17 @@ def appkey_modify(request, appkey_id):
             appkey.name = request.POST['name']
             qs0 = Appkey.objects.filter(name=appkey.name, id__ne=appkey_id)
             if qs0:
-                _json.update({'message':'same name already exist'})
+                _json = response_json(message='same name already exist')
             else:
                 #access 
                 access = _parse_access(request)                
                 appkey.access.update(access)
                 
                 appkey.save()
-                _json.update({
-                              "navTabId":"appkey-list", 
-                              "callbackType":"closeCurrent",
-                              'message':'success'
-                              })
-                
+                _json = response_json(navTabId='appkey-list', callbackType='closeCurrent')
         
         else:
-            _json.update({
-                          'message':f.errors.values()
-                          })
+            _json = response_json(message=f.errors.values())
 
         return HttpResponse(json.dumps(_json))
 
