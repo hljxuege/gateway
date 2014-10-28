@@ -184,6 +184,7 @@ def method_modify(request, method_id):
             method.desc = request.POST['desc']
             server_id = request.POST['server.id']
             method.server = Server.objects.get(id=server_id)
+            method.need_login = True if request.POST.get('need_login', '') == 'Y' else False
             # url 
             url = _parse_url(request)            
             method.url.update(url)

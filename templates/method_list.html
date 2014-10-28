@@ -32,7 +32,7 @@
 				<th width="80" orderField="name" class="asc">name</th>
 				<th width="100" orderField="desc" class="desc">desc</th>
 				<th width="100" orderField="num" class="desc">url</th>
-				
+				<th width="100" orderField="num" class="desc">need_login</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,7 +41,7 @@
 				<td>{{ method.name }}</td>
 				<td>{{ method.desc }}</td>
 				<td>{{ method.url }}</td>
-				
+				<td>{% if method.need_login %}"Y"{% else %}"N"{% endif %}</td>				
  
 			</tr>
 			{% endfor %}

@@ -12,6 +12,11 @@
 				<input name="desc" class="required" type="text" size="30" value="{{ method.desc }}" alt="请输入服务描述"/>
 			</p>
 			<p>
+				<label>need_login：</label>
+				<input name="need_login" class="required" type="text" size="30" value="{% if method.need_login %}"Y"{% else %}"N"{% endif %}"  alt="Y/N"/>
+			</p>
+			
+			<p>
 				<label>SERVER：</label>
 				<input name="server.id" value="{{ method.server.id }}" type="hidden"/>
 				<input class="required" name="server.name"  value="{{ method.server.name }}" type="text" readonly/>

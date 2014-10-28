@@ -5,7 +5,7 @@ Created on Oct 6, 2014
 @author: liuxue
 '''
 from mongoengine import Document, StringField, IntField, DateTimeField, \
-DictField, ReferenceField
+DictField, ReferenceField, BooleanField
 import datetime
 
 class Server(Document):
@@ -41,6 +41,7 @@ class Method(Document):
     desc = StringField(max_length=40)
     server = ReferenceField(Server)
     url = DictField()
+    need_login = BooleanField(required=True, default=False)
     created_at = DateTimeField(required=True)
     update_at = DateTimeField(required=True)
     
