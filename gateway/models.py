@@ -59,6 +59,7 @@ class Appkey(Document):
     '''
     name = StringField(max_length=40, unique=True)
     secert_key = StringField(max_length=40)
+    session_time = IntField(default=1200)# seconds
     desc = StringField(max_length=40)
     access = DictField(default={})
     created_at = DateTimeField(required=True)

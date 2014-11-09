@@ -338,6 +338,7 @@ def appkey_add(request):
             appkey.desc = request.POST['desc']
             appkey.secert_key = request.POST['secert_key']
             appkey.name = request.POST['name']
+            appkey.session_time = request.POST['session_time']
             qs0 = Appkey.objects.filter(name=appkey.name)
             if qs0:
                 _json = response_json(message='same name already exist')
@@ -371,6 +372,7 @@ def appkey_modify(request, appkey_id):
             appkey.desc = request.POST['desc']
             appkey.secert_key = request.POST['secert_key']
             appkey.name = request.POST['name']
+            appkey.session_time = request.POST['session_time']
             qs0 = Appkey.objects.filter(name=appkey.name, id__ne=appkey_id)
             if qs0:
                 _json = response_json(message='same name already exist')

@@ -59,7 +59,7 @@
 				<th width="80" orderField="name" class="asc">name</th>
 				<th width="100" orderField="desc" class="desc">desc</th>
 				<th width="100" orderField="secert_key" class="secert_key">secert</th>
-				
+				<th width="100" orderField="session_time" class="session_time">session_time('s)</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -67,8 +67,8 @@
 			<tr target="appkey_id" rel="{{ appkey.id }}">
 				<td>{{ appkey.name }}</td>
 				<td>{{ appkey.desc }}</td>
-				<td>{{ appkey.secert_key }}</td>	
- 
+				<td>{{ appkey.secert_key }}</td>
+				<td>{{ appkey.session_time }}</td>	 
 			</tr>
 			{% endfor %}
 
