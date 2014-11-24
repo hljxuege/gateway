@@ -14,7 +14,7 @@ from django.shortcuts import render
 from gateway.forms import GatewayForm, MethodForm, ServerForm, AppkeyForm
 from .models import Method, Appkey, Server
 from mongoengine.django.shortcuts import get_document_or_404
-import urllib
+import urllib2
 import uuid
 import logging
 logger = logging.getLogger('django')
@@ -85,35 +85,58 @@ def gateway(request):
         pass
         
         #check sign
+        pass
         
-        #get method
-        method = get_document_or_404(Method, name=_method)
+        url = get_request_url(_method, _version, _appkey)        
         
-        #get appkey
-        appkey = get_document_or_404(Appkey, name=_appkey)
-        
-        if method.url.has_key(_version):
-            uri = method.url[_version]
+        if request.method == 'POST':
+            data = request.POST.dict()
         else:
-            raise Exception('no url found')
+            data = request.GET.dict()
         
-        #get server's ip and host
-        server = method.server
+        header = {}
         
-        # combine ip port uri
-        req = "http://%s:%s/%s"%(server.ip, server.port, uri)
-        logger.info('REQ-%s-%s'%(uuid_str, req))
-        #request 
-        request = urllib.urlopen(req)
-        res = request.read()
-        logger.info('RES-%s-%s'%(uuid_str, res))
-        #proess return
+        if data.has_key('session'):
+            url = get_request_url('user.base.session', 0, '')  
+            result = _re_request(url)
+            assert result['code'] == 0, 'expire out of time'
+                            
+            header = {'session':result['data']}                
         
-        result = {'status':0, 'msg':'ok'}
-#         result = res
+        result = _re_request(url, data, header)
+        
     except Exception, e:
         result = {'status':-1, 'msg':str(e)}
+        
     return HttpResponse(json.dumps(result))
+
+def get_request_url(method, version, appkey):
+    #get method
+    method = get_document_or_404(Method, name=method)
+    
+    #get appkey
+    appkey = get_document_or_404(Appkey, name=appkey)
+    
+    if method.url.has_key(version):
+        uri = method.url[version]
+    else:
+        raise Exception('no url found')
+    
+    #get server's ip and host
+    server = method.server
+    
+    # combine ip port uri
+    return "http://%s:%s/%s"%(server.ip, server.port, uri)
+
+def _re_request(url, data={}, header={}):
+    req = urllib2.Request(url, data=data, header=header)
+    request = urllib2.urlopen(req)
+    res = request.read()
+    return res
+
+def get_session(session):
+    pass
+    
 def _parse_url(request):
     params = request.POST.dict()
     v_dict = {}
