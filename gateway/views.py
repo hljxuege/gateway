@@ -5,18 +5,22 @@ Created on Oct 6, 2014
 @author: liuxue
 '''
 import json
+import logging
+import urllib
+import urllib2
+import uuid
 
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render
+from mongoengine.django.shortcuts import get_document_or_404
 
 from gateway.forms import GatewayForm, MethodForm, ServerForm, AppkeyForm
+
 from .models import Method, Appkey, Server
-from mongoengine.django.shortcuts import get_document_or_404
-import urllib2
-import uuid
-import logging
+
+
 logger = logging.getLogger('django')
 '''
 json demo
@@ -97,15 +101,18 @@ def gateway(request):
         header = {}
         
         if data.has_key('session'):
-            url = get_request_url('user.base.session', 0, '')  
-            result = _re_request(url)
+            url = get_request_url('user-base-session', _version, _appkey)  
+            result = _re_request(url, {'session': data['session']})
             assert result['code'] == 0, 'expire out of time'
-                            
+            
             header = {'session':result['data']}                
         
+        logger.debug(url)
         result = _re_request(url, data, header)
         
     except Exception, e:
+        logger.exception(e)
+        
         result = {'status':-1, 'msg':str(e)}
         
     return HttpResponse(json.dumps(result))
@@ -129,10 +136,10 @@ def get_request_url(method, version, appkey):
     return "http://%s:%s/%s"%(server.ip, server.port, uri)
 
 def _re_request(url, data={}, header={}):
-    req = urllib2.Request(url, data=data, header=header)
+    req = urllib2.Request(url, data=urllib.urlencode(data), headers=header)
     request = urllib2.urlopen(req)
     res = request.read()
-    return res
+    return json.loads(res)
 
 def get_session(session):
     pass
