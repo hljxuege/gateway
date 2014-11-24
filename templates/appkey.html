@@ -49,8 +49,8 @@
 						<tbody>
 							{% for m,v in appkey.access.items %}
 							<tr class="unitBox">
-								<td><input type="text" name="access[{{forloop.counter0}}].method" value="{{ m }}" size="22" class="required textInput valid" maxlength="10"></td>
-								<td><input type="text" name="access[{{forloop.counter0}}].version" value="{{ v }}" size="22" class="required textInput"></td>
+								<td><input type="text" name="access[{{forloop.counter0}}].method" value="{{ m }}" size="22" class="required textInput valid" readonly></td>
+								<td><input type="text" name="access[{{forloop.counter0}}].version" value="{{ v }}" size="22" class="required textInput" readonly></td>
 								<td><a class="btnLook" href="{% url 'methods' %}" lookupGroup="access[{{forloop.counter0}}]">查找带回</a></td>	
 							</tr>
 							{% endfor %}
