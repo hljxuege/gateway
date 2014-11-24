@@ -5,7 +5,7 @@
 			<li><a href="javascript:">{{ m.name }}</a>
 				<ul>
 				    {% for v, su in m.url.items %}
-					<li><a href="javascript:" onclick="$.bringBack({id:'{{ m.id }}', version:'{{ v }}')">{{ v }}</a></li>
+					<li><a href="javascript:" onclick="$.bringBack({id:'{{ m.id }}', version:'{{ v }}', name:'{{ m.name }}'})">{{ v }}</a></li>
 					{% endfor %}
 				</ul>
 			</li>
