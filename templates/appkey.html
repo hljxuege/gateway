@@ -22,7 +22,7 @@
 			<p>
 				<label>Access：</label>
 				<input name="method.id" value="{{ appkey.access }}" type="hidden"/>
-				<input class="" name="method.name" type="text" readonly/>
+				<input class="" name="method.method" type="text" readonly/>
 				<a class="btnLook" href="{% url 'methods' %}" lookupGroup="method">查找带回</a>	
 			</p>
 		<div class="divider"></div>
@@ -40,8 +40,9 @@
 					<table class="list nowrap itemDetail" addButton="新建从表1条目" width="100%">
 						<thead>
 							<tr>
-								<th type="text" name="access[#index#].method" defaultVal="#index#" size="2" fieldClass="required" >method_name</th>
+								<th type="text" name="access[#index#].method" defaultVal="#index#" size="22" fieldClass="required" >method_name</th>
 								<th type="text" name="access[#index#].version"  size="22" fieldClass="required" >version</th>
+								<th type="lookup" lookupUrl="{% url 'methods' %}" lookupGroup="access[#index#]"   ></th>
 							</tr>
 							
 						</thead>
@@ -50,6 +51,7 @@
 							<tr class="unitBox">
 								<td><input type="text" name="access[{{forloop.counter0}}].method" value="{{ m }}" size="22" class="required textInput valid" maxlength="10"></td>
 								<td><input type="text" name="access[{{forloop.counter0}}].version" value="{{ v }}" size="22" class="required textInput"></td>
+								<td><a class="btnLook" href="{% url 'methods' %}" lookupGroup="access[{{forloop.counter0}}]">查找带回</a></td>	
 							</tr>
 							{% endfor %}
 						</tbody>
