@@ -28,7 +28,6 @@ def get_url(gateway_url, serverkey, appsecret, method, api_version, **kwargs):
          'nonce':nonce
          }
     p.update(kwargs)
-    print p
     sign = get_gateway_sign(gateway_url, appsecret, p)
     query = urllib.urlencode(p)
     request_url = '%s?%s&%s'%(gateway_url, query, urllib.urlencode(dict(sign=sign)))
