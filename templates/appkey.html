@@ -48,7 +48,7 @@
 						<tbody>
 							{% for m,v in appkey.access.items %}
 							<tr class="unitBox">
-								<td><input type="text" name="access[{{forloop.counter0}}].method" value="{{ m }}" size="12" class="required textInput valid" maxlength="10"></td>
+								<td><input type="text" name="access[{{forloop.counter0}}].method" value="{{ m }}" size="22" class="required textInput valid" maxlength="10"></td>
 								<td><input type="text" name="access[{{forloop.counter0}}].version" value="{{ v }}" size="22" class="required textInput"></td>
 							</tr>
 							{% endfor %}
