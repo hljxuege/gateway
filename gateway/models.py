@@ -23,7 +23,6 @@ class Server(Document):
     created_at = DateTimeField(required=True)
     update_at = DateTimeField(required=True)
 
-
     
 class Method(Document):
     '''
@@ -65,5 +64,14 @@ class Appkey(Document):
     created_at = DateTimeField(required=True)
     update_at = DateTimeField(required=True)
 
+class UploadConfig(Document):
+    
+    created_at = DateTimeField(required=True)
+    update_at = DateTimeField(required=True)
+    
+    
 signals.pre_save.connect(update_modified)    
     
+import settings
+def utc_to_localtime(utc_datetime):
+    return utc_datetime + settings.EIGHT

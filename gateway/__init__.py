@@ -1,5 +1,6 @@
 from mongoengine import connect
-connect('gateway')
+import settings
+connect('gateway', **settings.MONGO)
 # from mongoengine import Document, StringField, IntField, DateTimeField, \
 # DictField, ReferenceField
 # import datetime
