@@ -83,6 +83,7 @@ $(function(){
 			$("#themeList").theme({themeBase:"themes"}); // themeBase 相对于index页面的主题base路径
 		}
 	});
+	
 });
 
 </script>
@@ -152,6 +153,11 @@ $(function(){
 							<li><a href="#" target="navTab">上传服务面板</a>
 								<ul>
 									<li><a href="#" target="navTab" rel="main">上传服务配置</a></li>
+								</ul>
+							</li>
+							<li><a href="#" target="navTab">TEST</a>
+								<ul>
+									<li><a href="#" >TEST</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -342,20 +348,12 @@ Error loading XML document: dwz.frag.xml
 
 	<div id="footer">Copyright &copy; 2010 <a href="{% get_static_prefix %}demo_page2.html" target="dialog">DWZ团队</a> 京ICP备05019125号-10</div>
 {% block js %}
-<!-- 注意此处js代码用于google站点统计，非DWZ代码，请删除 -->
 <script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-16716654-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? ' https://ssl' : ' http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-  $("[href='#']").click(function(){
+$(document).ready(function(){
+	  $("[href='#']").live(function(){
 	  return false;
-  });
+	  });
+});
 </script>
 {% endblock %}
 </body>
