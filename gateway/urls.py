@@ -1,4 +1,5 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
+
 
 urlpatterns = patterns('',
     # Examples:
@@ -25,4 +26,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^gateway/index/$', 'gateway.views.index', name='index'),
+    
+    url(r'^upload/', include('upload.urls')),
+    
 )

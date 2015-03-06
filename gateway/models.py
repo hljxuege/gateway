@@ -65,7 +65,12 @@ class Appkey(Document):
     update_at = DateTimeField(required=True)
 
 class UploadConfig(Document):
-    
+    name = StringField(max_length=40, unique=True)
+    bucket = StringField(max_length=40)
+    policy = DictField(default={})
+    callback_url = StringField(max_length=128)
+    callback_body = StringField(max_length=128)
+    download_domain = StringField(max_length=128)
     created_at = DateTimeField(required=True)
     update_at = DateTimeField(required=True)
     
