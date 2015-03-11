@@ -7,13 +7,9 @@ Created on Oct 6, 2014
 from mongoengine import Document, StringField, IntField, DateTimeField, \
 DictField, ReferenceField, BooleanField
 from mongoengine import signals
-import datetime
 
-def update_modified(sender, document):
-    if not document.created_at:     
-        document.created_at = datetime.datetime.now()
+from utils.dbutil import update_modified
 
-    document.update_at = datetime.datetime.now()
 
 class Server(Document):
     name = StringField(max_length=40, unique=True, required=True)
@@ -64,19 +60,6 @@ class Appkey(Document):
     created_at = DateTimeField(required=True)
     update_at = DateTimeField(required=True)
 
-class UploadConfig(Document):
-    name = StringField(max_length=40, unique=True)
-    bucket = StringField(max_length=40)
-    policy = DictField(default={})
-    callback_url = StringField(max_length=128)
-    callback_body = StringField(max_length=128)
-    download_domain = StringField(max_length=128)
-    created_at = DateTimeField(required=True)
-    update_at = DateTimeField(required=True)
-    
     
 signals.pre_save.connect(update_modified)    
     
-import settings
-def utc_to_localtime(utc_datetime):
-    return utc_datetime + settings.EIGHT

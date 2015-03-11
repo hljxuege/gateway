@@ -28,12 +28,12 @@ def upload():
 #     base_url = qiniu.rs.make_base_url('wm-test.u.qiniudn.com', key)
  
 if __name__ == '__main__':
-    u_t = upload_token()
-    print u_t
-    key = '1.jpg'
-    ret, info = put_file(u_t, None, '/home/liuxue/Downloads/mahua-logo.jpg', check_crc=True)
-    print(info)
-    print ret
+#     u_t = upload_token()
+#     print u_t
+#     key = '1.jpg'
+#     ret, info = put_file(u_t, None, '/home/liuxue/Downloads/mahua-logo.jpg', check_crc=True)
+#     print(info)
+#     print ret
 
     import requests    
      
@@ -41,7 +41,7 @@ if __name__ == '__main__':
      
     bucket = 'wm-test'
     key = '1.jpg'
-    base_url = 'http://%s/%s' % (bucket + '.u.qiniudn.com', key)
+    base_url = 'http://%s/%s?imageView2/1/w/200/h/200/interlace/1' % (bucket + '.u.qiniudn.com', key)
     private_url = q.private_download_url(base_url, expires=3600)
     print(private_url)
     r = requests.get(private_url)

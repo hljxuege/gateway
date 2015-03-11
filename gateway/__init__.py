@@ -1,5 +1,5 @@
 from mongoengine import connect
-import settings
+from django.conf import settings
 connect('gateway', **settings.MONGO)
 # from mongoengine import Document, StringField, IntField, DateTimeField, \
 # DictField, ReferenceField
