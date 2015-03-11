@@ -5,10 +5,12 @@ from mongoengine import signals
 from utils.dbutil import update_modified
 # Create your models here.
 class UploadConfig(Document):
-    name = StringField(max_length=40, unique=True)
+    name = StringField(max_length=40, unique=True, required=True)
     bucket = StringField(max_length=40)
-    policy = DictField(default={})
+    default_policy = DictField(default={})
     callback_url = StringField(max_length=128)
+    access_key = StringField(max_length=128)
+    secret_key = StringField(max_length=128)
     callback_body = StringField(max_length=128)
     download_domain = StringField(max_length=128)
     created_at = DateTimeField(required=True)
